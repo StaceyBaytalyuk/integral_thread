@@ -53,6 +53,7 @@ public class Controller {
         finishedThreadCount = 0;
         double delta = (b - a) / threads;
         long start = System.currentTimeMillis();
+
         for (int i = 0; i < threads; i++) {
             ThreadIntegralCalculator t = new ThreadIntegralCalculator(this, a+i*delta, a+(i+1)*delta, n/threads, (x) -> 3*sqrt(x));
             new Thread(t).start();
@@ -67,14 +68,14 @@ public class Controller {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        long finish = System.currentTimeMillis();
 
+        double time = (double)(System.currentTimeMillis()-start)/1000;
         integralText.setText("Результат: "+totalResult);
-        timeText.setText("Час виконання: "+(finish-start)+" мілісекунд");
+        timeText.setText("Час виконання: "+time+" секунд");
     }
 
-    public synchronized void sendResult(double v) {
-        totalResult += v;
+    public synchronized void sendResult(double value) {
+        totalResult += value;
         finishedThreadCount++;
         notify();
     }

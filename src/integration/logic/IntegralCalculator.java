@@ -1,5 +1,4 @@
 package integration.logic;
-
 import java.util.function.DoubleUnaryOperator;
 
 public class IntegralCalculator {
