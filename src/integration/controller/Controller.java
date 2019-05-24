@@ -49,8 +49,7 @@ public class Controller {
     }
 
     private void calculate() {
-        totalResult = 0;
-        finishedThreadCount = 0;
+        optimizeNumberOfThreads();
         double delta = (b - a) / threads;
         long start = System.currentTimeMillis();
 
@@ -59,6 +58,8 @@ public class Controller {
             new Thread(t).start();
         }
 
+        totalResult = 0;
+        finishedThreadCount = 0;
         try {
             synchronized (this) {
                 while (finishedThreadCount < threads) {
@@ -85,5 +86,13 @@ public class Controller {
         alert.setTitle("Помилка");
         alert.setHeaderText(message);
         alert.showAndWait();
+    }
+
+    private void optimizeNumberOfThreads() {
+        int maxThreads = Runtime.getRuntime().availableProcessors();
+        if ( threads > maxThreads ) {
+            System.out.println("Better to use "+maxThreads+" instead of "+threads);
+            threads = maxThreads;
+        }
     }
 }
